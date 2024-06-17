@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  orderdb:
+    container_name: orderdb
+    image: debezium/postgres:11
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    restart: on-failure
+
