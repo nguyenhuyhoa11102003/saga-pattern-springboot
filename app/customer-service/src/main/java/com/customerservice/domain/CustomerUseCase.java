@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 
@@ -29,6 +30,30 @@ public class CustomerUseCase implements CustomerUseCasePort {
 		var customer = mapper.convertValue(customerRequest, Customer.class);
 		customer.setId(UUID.randomUUID());
 		return customerRepository.saveCustomer(customer);
+	}
+
+	@Override
+	public boolean reserveBalance(PlacedOrderEvent orderEvent) {
+		var customer = findById(orderEvent.customerId());
+		var newBalance = customer
+				.getBalance()
+				.subtract(orderEvent.price().multiply(BigDecimal.valueOf(orderEvent.quantity())));
+		if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+			return false;
+		}
+		customer.setBalance(newBalance);
+		customerRepository.saveCustomer(customer);
+		return true;
+	}
+
+	@Override
+	public void compensateBalance(PlacedOrderEvent orderEvent) {
+		var customer = findById(orderEvent.customerId());
+		var newBalance = customer
+				.getBalance()
+				.add(orderEvent.price().multiply(BigDecimal.valueOf(orderEvent.quantity())));
+		customer.setBalance(newBalance);
+		customerRepository.saveCustomer(customer);
 	}
 
 }

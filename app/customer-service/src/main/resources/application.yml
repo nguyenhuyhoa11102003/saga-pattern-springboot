@@ -11,24 +11,23 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
-      use-new-id-generator-mappings: true
     generate-ddl: true
   datasource:
     url: jdbc:postgresql://localhost:5436/postgres
     username: postgres
     password: root
-#  cloud:
-#    consul:
-#      host: ${CONSUL_HOST:localhost}
-#      port: ${CONSUL_PORT:8500}
-#    function:
-#      definition: handleReserveCustomerBalanceRequest;handleCompensateCustomerBalanceRequest
-#    stream:
-#      kafka:
-#        binder:
-#          brokers: localhost:9092
-#      bindings:
-#        handleReserveCustomerBalanceRequest-in-0:
-#          destination: ORDER.events
-#        handleCompensateCustomerBalanceRequest-in-0:
-#          destination: ORDER.events
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+    function:
+      definition: handleReserveCustomerBalanceRequest;handleCompensateCustomerBalanceRequest
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        handleReserveCustomerBalanceRequest-in-0:
+          destination: ORDER.events
+        handleCompensateCustomerBalanceRequest-in-0:
+          destination: ORDER.events

@@ -15,16 +15,7 @@ spring:
         locator:
           lower-case-service-id: true   # Xác định xem các ID của dịch vụ trong Consul có nên chuyển đổi thành chữ thường hay không.
           enabled: true                 # Bật tính năng phát hiện dịch vụ của Gateway, cho phép API Gateway tìm kiếm các dịch vụ được đăng ký trong Consul.
-      globalcors: # Cấu hình CORS (Cross-Origin Resource Sharing) -->
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"         # Xác định các cấu hình CORS toàn cục cho tất cả các yêu cầu được gửi đến API Gateway. Trong trường hợp này, tất cả các yêu cầu từ bất kỳ nguồn nào (*) đều được cho phép
-            allowedMethods: # chỉ những phương thức được chỉ định (GET, POST, PUT, DELETE, OPTIONS) được phép.
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
+
       routes: # Xác định các tuyến đường (routes) mà API Gateway sẽ sử dụng để định tuyến yêu cầu đến các dịch vụ phía sau.
         - id: customer-service
           uri: lb://customer-service
@@ -38,3 +29,13 @@ spring:
           uri: lb://inventory-service
           predicates:
             - Path=/inventory-service/**
+      globalcors: # Cấu hình CORS (Cross-Origin Resource Sharing) -->
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"         # Xác định các cấu hình CORS toàn cục cho tất cả các yêu cầu được gửi đến API Gateway. Trong trường hợp này, tất cả các yêu cầu từ bất kỳ nguồn nào (*) đều được cho phép
+            allowedMethods: # chỉ những phương thức được chỉ định (GET, POST, PUT, DELETE, OPTIONS) được phép.
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS

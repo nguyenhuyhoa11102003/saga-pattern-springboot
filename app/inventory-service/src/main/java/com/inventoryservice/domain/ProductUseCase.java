@@ -34,6 +34,12 @@ public class ProductUseCase implements ProductUseCasePort {
 
 	@Override
 	public boolean reserveProduct(PlacedOrderEvent orderEvent) {
+		var product = findById(orderEvent.productId());
+		if (product.getStocks() >= orderEvent.quantity()) {
+			product.setStocks(product.getStocks() - orderEvent.quantity());
+			productRepository.saveProduct(product);
+			return true;
+		}
 		return false;
 	}
 }

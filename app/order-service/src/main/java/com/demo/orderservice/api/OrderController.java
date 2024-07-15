@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orders")
 public class OrderController {
 	private final OrderUseCasePort orderUseCasePort;
-
 	@PostMapping
 	public void placeOrder(@RequestBody @Valid OrderRequest orderRequest) {
 		log.info("Received new order request {}", orderRequest);

@@ -31,12 +31,19 @@ public class OrderUseCase implements OrderUseCasePort {
 		order.setStatus(OrderStatus.PENDING);
 		order.setId(UUID.randomUUID());
 		orderRepository.saveOrder(order);
-//		orderRepository.exportOutBoxEvent(order);
-
+		orderRepository.exportOutBoxEvent(order);
 	}
 
 	@Override
 	public void updateOrderStatus(UUID orderId, boolean success) {
-
+		var order = orderRepository.findOrderById(orderId);
+		if (order.isPresent()) {
+			if (success) {
+				order.get().setStatus(OrderStatus.COMPLETED);
+			} else {
+				order.get().setStatus(OrderStatus.CANCELED);
+			}
+			orderRepository.saveOrder(order.get());
+		}
 	}
 }
